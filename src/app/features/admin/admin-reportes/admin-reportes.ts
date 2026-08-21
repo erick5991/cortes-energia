@@ -12,25 +12,23 @@ import { ReporteRevisionCard } from './reporte-revision-card';
   template: `
     <section aria-labelledby="titulo-admin-reportes" class="flex flex-col gap-6">
       <div>
-        <span
-          class="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-rose-800 dark:bg-amber-900/30 dark:text-amber-300"
-        >
+        <span class="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
           Panel admin
         </span>
         <h1 id="titulo-admin-reportes" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
           Reportes de usuarios
         </h1>
-        <span class="mt-3 block h-1.5 w-14 rounded-full bg-amber-400" aria-hidden="true"></span>
-        <p class="mt-3 text-base text-stone-600 dark:text-stone-400">
+        <span class="mt-3 block h-1.5 w-14 rounded-full bg-neutral-900 dark:bg-white" aria-hidden="true"></span>
+        <p class="mt-3 text-base text-neutral-600 dark:text-neutral-400">
           Revisa los reportes pendientes: descártalos, prográmalos como corte o márcalos urgentes.
         </p>
       </div>
 
       @if (reportes().length === 0) {
         <div
-          class="rounded-xl border-2 border-dashed border-stone-300 bg-white/60 p-8 text-center dark:border-stone-700 dark:bg-stone-800/40"
+          class="rounded-xl border-2 border-dashed border-neutral-300 bg-white/60 p-8 text-center dark:border-neutral-700 dark:bg-neutral-800/40"
         >
-          <p class="text-base text-stone-600 dark:text-stone-400">Todavía no hay reportes.</p>
+          <p class="text-base text-neutral-600 dark:text-neutral-400">Todavía no hay reportes.</p>
         </div>
       } @else {
         <ul class="flex flex-col gap-5">
