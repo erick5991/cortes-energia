@@ -1,3 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+/* Modo claro/oscuro controlado por la clase .dark (ver ThemeService), no solo por prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+}
