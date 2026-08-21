@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // usuarios/{uid}: cada usuario solo puede leer su propio documento.
+    // El documento (incluido "role") se crea y edita manualmente desde la
+    // consola de Firebase; la app nunca escribe en esta colección.
+    match /usuarios/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+    }
+
+    // zonas: colección de solo lectura, cargada manualmente en la consola.
+    match /zonas/{zonaId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // cortes_programados: lectura pública, escritura solo admin.
+    match /cortes_programados/{corteId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // reportes: cualquier usuario autenticado puede crear un reporte propio,
+    // en estado "pendiente" y sin revisión previa. Solo el dueño o un admin
+    // pueden leerlo. Solo un admin puede actualizarlo (revisión). El dueño
+    // puede eliminar su propio reporte.
+    match /reportes/{reporteId} {
+      allow create: if isSignedIn()
+        && request.resource.data.reportadoPor == request.auth.uid
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.mensajeAdmin == null
+        && request.resource.data.revisadoPor == null;
+      allow read: if isSignedIn()
+        && (resource.data.reportadoPor == request.auth.uid || isAdmin());
+      allow update: if isAdmin();
+      allow delete: if isSignedIn() && resource.data.reportadoPor == request.auth.uid;
+    }
+  }
+}
