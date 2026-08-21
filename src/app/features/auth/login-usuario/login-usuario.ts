@@ -10,7 +10,7 @@ import { AuthService } from '../../../core/services/auth.service';
     <section aria-labelledby="titulo-login" class="mx-auto flex max-w-sm flex-col gap-4">
       <div>
         <h1 id="titulo-login" class="text-2xl font-semibold tracking-tight">Iniciar sesión</h1>
-        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+        <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">
           Para reportar un corte de luz necesitas iniciar sesión con tu cuenta de Google.
         </p>
       </div>
@@ -21,7 +21,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
       <button
         type="button"
-        class="inline-flex items-center justify-center gap-3 rounded-full border border-slate-500 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-60"
+        class="inline-flex items-center justify-center gap-3 rounded-full border border-stone-500 bg-white px-4 py-2.5 text-sm font-medium text-stone-800 shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 disabled:opacity-60"
         [disabled]="cargando()"
         (click)="iniciarSesion()"
       >

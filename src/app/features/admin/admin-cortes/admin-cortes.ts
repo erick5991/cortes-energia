@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import {
@@ -10,26 +10,30 @@ import {
 } from '../../../core/models/corte-programado.model';
 import { ZONAS } from '../../../core/models/zona.model';
 import { CortesService } from '../../../core/services/cortes.service';
-import { Badge, type TonoBadge } from '../../../shared/badge/badge';
+import { ACENTO_POR_TONO, Badge, type TonoBadge } from '../../../shared/badge/badge';
 import { Boton } from '../../../shared/boton/boton';
+import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmacion-modal';
 
 @Component({
   selector: 'app-admin-cortes',
-  imports: [DatePipe, ReactiveFormsModule, Badge, Boton],
+  imports: [DatePipe, ReactiveFormsModule, Badge, Boton, ConfirmacionModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section aria-labelledby="titulo-admin-cortes" class="flex flex-col gap-8">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+        <span
+          class="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-rose-800 dark:bg-amber-900/30 dark:text-amber-300"
+        >
           Panel admin
-        </p>
-        <h1 id="titulo-admin-cortes" class="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+        </span>
+        <h1 id="titulo-admin-cortes" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
           Cortes programados
         </h1>
+        <span class="mt-3 block h-1.5 w-14 rounded-full bg-amber-400" aria-hidden="true"></span>
       </div>
 
-      <div class="rounded-xl bg-white p-5 shadow-sm dark:bg-slate-800">
-        <h2 class="text-lg font-semibold">Crear corte</h2>
+      <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-stone-800">
+        <h2 class="text-xl font-semibold">Crear corte</h2>
 
         @if (errorFormulario()) {
           <p role="alert" class="mt-3 text-sm text-red-700 dark:text-red-300">{{ errorFormulario() }}</p>
@@ -44,7 +48,7 @@ import { Boton } from '../../../shared/boton/boton';
             <select
               id="zona"
               formControlName="zona"
-              class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-700 dark:text-slate-100"
+              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
               [attr.aria-invalid]="campoInvalido('zona')"
             >
               <option value="" disabled>Elige una zona</option>
@@ -60,7 +64,7 @@ import { Boton } from '../../../shared/boton/boton';
               id="fechaInicio"
               type="datetime-local"
               formControlName="fechaInicio"
-              class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-700 dark:text-slate-100"
+              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
               [attr.aria-invalid]="campoInvalido('fechaInicio')"
             />
           </div>
@@ -72,7 +76,7 @@ import { Boton } from '../../../shared/boton/boton';
               type="text"
               placeholder="Ej: 2 horas"
               formControlName="duracionEstimada"
-              class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-700 dark:text-slate-100"
+              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
               [attr.aria-invalid]="campoInvalido('duracionEstimada')"
             />
           </div>
@@ -82,7 +86,7 @@ import { Boton } from '../../../shared/boton/boton';
               id="esUrgente"
               type="checkbox"
               formControlName="esUrgente"
-              class="h-4 w-4 rounded accent-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              class="h-4 w-4 rounded accent-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700"
             />
             <label for="esUrgente" class="text-sm font-medium">Marcar como urgente</label>
           </div>
@@ -101,16 +105,13 @@ import { Boton } from '../../../shared/boton/boton';
         }
 
         @if (cortes().length === 0) {
-          <p class="text-base text-slate-600 dark:text-slate-400">Todavía no hay cortes cargados.</p>
+          <p class="text-base text-stone-600 dark:text-stone-400">Todavía no hay cortes cargados.</p>
         } @else {
-          <ul class="flex flex-col gap-4">
+          <ul class="flex flex-col gap-5">
             @for (corte of cortes(); track corte.id) {
-              <li
-                class="rounded-xl border-l-4 bg-white p-5 shadow-sm dark:bg-slate-800"
-                [class]="claseAcento(corte)"
-              >
+              <li class="rounded-xl border-l-4 p-6 shadow-sm" [class]="claseCard(corte)">
                 <div class="flex flex-wrap items-center justify-between gap-2">
-                  <h3 class="text-lg font-semibold">{{ corte.zona }}</h3>
+                  <h3 class="text-xl font-semibold">{{ corte.zona }}</h3>
                   <div class="flex gap-2">
                     @if (corte.esUrgente) {
                       <app-badge texto="URGENTE" tono="urgente" />
@@ -119,26 +120,26 @@ import { Boton } from '../../../shared/boton/boton';
                   </div>
                 </div>
                 <dl
-                  class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-base text-slate-700 dark:text-slate-300"
+                  class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-base text-stone-700 dark:text-stone-300"
                 >
-                  <dt class="text-slate-500 dark:text-slate-400">Inicio</dt>
+                  <dt class="text-stone-500 dark:text-stone-400">Inicio</dt>
                   <dd>{{ corte.fechaInicio.toDate() | date: 'medium' }}</dd>
-                  <dt class="text-slate-500 dark:text-slate-400">Duración estimada</dt>
+                  <dt class="text-stone-500 dark:text-stone-400">Duración estimada</dt>
                   <dd>{{ corte.duracionEstimada }}</dd>
                 </dl>
 
-                @if (corte.estado !== 'resuelto') {
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    @if (corte.estado === 'programado') {
-                      <button
-                        appBoton="secundario"
-                        type="button"
-                        [disabled]="actualizandoId() === corte.id"
-                        (click)="marcarEstado(corte, 'en curso')"
-                      >
-                        Marcar en curso
-                      </button>
-                    }
+                <div class="mt-4 flex flex-wrap gap-2">
+                  @if (corte.estado === 'programado') {
+                    <button
+                      appBoton="secundario"
+                      type="button"
+                      [disabled]="actualizandoId() === corte.id"
+                      (click)="marcarEstado(corte, 'en curso')"
+                    >
+                      Marcar en curso
+                    </button>
+                  }
+                  @if (corte.estado !== 'resuelto') {
                     <button
                       appBoton="secundario"
                       type="button"
@@ -147,14 +148,29 @@ import { Boton } from '../../../shared/boton/boton';
                     >
                       Marcar resuelto
                     </button>
-                  </div>
-                }
+                  }
+                  <button
+                    appBoton="peligro"
+                    type="button"
+                    [disabled]="actualizandoId() === corte.id"
+                    (click)="pedirEliminar(corte, modalEliminarCorte)"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </li>
             }
           </ul>
         }
       </div>
     </section>
+
+    <app-confirmacion-modal
+      #modalEliminarCorte
+      titulo="Eliminar corte"
+      [mensaje]="mensajeConfirmacion()"
+      (confirmado)="confirmarEliminar()"
+    />
   `,
 })
 export class AdminCortes {
@@ -169,6 +185,14 @@ export class AdminCortes {
 
   protected readonly actualizandoId = signal<string | null>(null);
   protected readonly errorAccion = signal<string | null>(null);
+  protected readonly corteAEliminar = signal<CorteProgramado | null>(null);
+
+  protected readonly mensajeConfirmacion = computed(() => {
+    const corte = this.corteAEliminar();
+    return corte
+      ? `¿Eliminar el corte en ${corte.zona}? Esta acción no se puede deshacer.`
+      : '';
+  });
 
   protected readonly formulario = new FormGroup({
     zona: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -221,6 +245,29 @@ export class AdminCortes {
     }
   }
 
+  protected pedirEliminar(corte: CorteProgramado, modal: ConfirmacionModal): void {
+    this.corteAEliminar.set(corte);
+    modal.abrir();
+  }
+
+  protected async confirmarEliminar(): Promise<void> {
+    const corte = this.corteAEliminar();
+    if (!corte) {
+      return;
+    }
+
+    this.errorAccion.set(null);
+    this.actualizandoId.set(corte.id);
+    try {
+      await this.cortesService.eliminarCorte(corte.id);
+    } catch {
+      this.errorAccion.set('No se pudo eliminar el corte. Intenta de nuevo.');
+    } finally {
+      this.actualizandoId.set(null);
+      this.corteAEliminar.set(null);
+    }
+  }
+
   protected etiquetaEstado(estado: EstadoCorte): string {
     return ETIQUETA_POR_ESTADO_CORTE[estado];
   }
@@ -229,7 +276,9 @@ export class AdminCortes {
     return TONO_POR_ESTADO_CORTE[estado];
   }
 
-  protected claseAcento(corte: CorteProgramado): string {
-    return corte.esUrgente ? 'border-l-red-500' : 'border-l-indigo-300 dark:border-l-indigo-700';
+  protected claseCard(corte: CorteProgramado): string {
+    const acento = corte.esUrgente ? ACENTO_POR_TONO.urgente : ACENTO_POR_TONO[TONO_POR_ESTADO_CORTE[corte.estado]];
+    const fondo = corte.esUrgente ? 'bg-red-50/70 dark:bg-red-950/20' : 'bg-white dark:bg-stone-800';
+    return `${acento} ${fondo}`;
   }
 }

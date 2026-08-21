@@ -3,6 +3,7 @@ import {
   Timestamp,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   query,
   serverTimestamp,
@@ -37,6 +38,15 @@ export class ReportesService {
       mensajeAdmin: null,
       revisadoPor: null,
     });
+  }
+
+  async eliminarReporte(reporteId: string): Promise<void> {
+    const uid = this.auth.user()?.uid;
+    if (!uid) {
+      throw new Error('Debes iniciar sesión para eliminar un reporte.');
+    }
+
+    await deleteDoc(doc(firestore, 'reportes', reporteId));
   }
 
   /** Reportes propios del usuario autenticado, más recientes primero. */

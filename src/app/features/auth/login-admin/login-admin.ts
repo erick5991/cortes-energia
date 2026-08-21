@@ -13,7 +13,7 @@ import { Boton } from '../../../shared/boton/boton';
     <section aria-labelledby="titulo-login-admin" class="mx-auto flex max-w-sm flex-col gap-4">
       <div>
         <h1 id="titulo-login-admin" class="text-2xl font-semibold tracking-tight">Ingreso de administrador</h1>
-        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+        <p class="mt-1 text-sm text-stone-600 dark:text-stone-400">
           Acceso con email y contraseña para el personal autorizado.
         </p>
       </div>
@@ -30,7 +30,7 @@ import { Boton } from '../../../shared/boton/boton';
             type="email"
             autocomplete="username"
             formControlName="email"
-            class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-800 dark:text-slate-100"
+            class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-800 dark:text-stone-100"
             [attr.aria-invalid]="campoInvalido('email')"
             [attr.aria-describedby]="campoInvalido('email') ? 'email-error' : null"
           />
@@ -48,7 +48,7 @@ import { Boton } from '../../../shared/boton/boton';
             type="password"
             autocomplete="current-password"
             formControlName="password"
-            class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-800 dark:text-slate-100"
+            class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-800 dark:text-stone-100"
             [attr.aria-invalid]="campoInvalido('password')"
             [attr.aria-describedby]="campoInvalido('password') ? 'password-error' : null"
           />

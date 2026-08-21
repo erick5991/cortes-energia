@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Timestamp, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { tap } from 'rxjs';
 
 import { firestore, fromCollection } from '../firebase';
@@ -75,5 +75,14 @@ export class CortesService {
     }
 
     await updateDoc(doc(firestore, 'cortes_programados', corteId), { estado });
+  }
+
+  async eliminarCorte(corteId: string): Promise<void> {
+    const adminUid = this.auth.user()?.uid;
+    if (!adminUid) {
+      throw new Error('Debes iniciar sesión como admin para eliminar un corte.');
+    }
+
+    await deleteDoc(doc(firestore, 'cortes_programados', corteId));
   }
 }
