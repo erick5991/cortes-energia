@@ -76,6 +76,18 @@ import { Boton } from '../../../shared/boton/boton';
                   class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
                 />
               </div>
+              <div class="flex flex-col gap-1">
+                <label [for]="'detalles-' + reporte().id" class="text-sm font-medium">
+                  Detalles adicionales (opcional)
+                </label>
+                <textarea
+                  [id]="'detalles-' + reporte().id"
+                  formControlName="detalles"
+                  rows="2"
+                  placeholder="Ej: Corte por mantenimiento de transformador"
+                  class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
+                ></textarea>
+              </div>
               <div class="flex items-center gap-2">
                 <input
                   [id]="'urgente-' + reporte().id"
@@ -122,14 +134,6 @@ import { Boton } from '../../../shared/boton/boton';
               >
                 Programar como corte
               </button>
-              <button
-                appBoton="secundario"
-                type="button"
-                [disabled]="procesando()"
-                (click)="marcarUrgente()"
-              >
-                Marcar urgente
-              </button>
             </div>
           }
         </form>
@@ -149,6 +153,7 @@ export class ReporteRevisionCard {
     mensajeAdmin: new FormControl('', { nonNullable: true }),
     fechaInicio: new FormControl('', { nonNullable: true }),
     duracionEstimada: new FormControl('', { nonNullable: true }),
+    detalles: new FormControl('', { nonNullable: true }),
     esUrgente: new FormControl(false, { nonNullable: true }),
   });
 
@@ -166,12 +171,6 @@ export class ReporteRevisionCard {
     );
   }
 
-  protected async marcarUrgente(): Promise<void> {
-    await this.ejecutar(() =>
-      this.reportesService.marcarUrgente(this.reporte().id, this.mensajeOpcional()),
-    );
-  }
-
   protected async confirmarProgramar(): Promise<void> {
     const { fechaInicio, duracionEstimada, esUrgente } = this.formulario.getRawValue();
     if (!fechaInicio || !duracionEstimada) {
@@ -182,15 +181,25 @@ export class ReporteRevisionCard {
     await this.ejecutar(() =>
       this.reportesService.programarComoCorte(
         this.reporte().id,
-        { zona: this.reporte().zona, fechaInicio: new Date(fechaInicio), duracionEstimada, esUrgente },
+        {
+          zona: this.reporte().zona,
+          fechaInicio: new Date(fechaInicio),
+          duracionEstimada,
+          esUrgente,
+          detalles: this.campoOpcional('detalles'),
+        },
         this.mensajeOpcional(),
       ),
     );
   }
 
   private mensajeOpcional(): string | null {
-    const mensaje = this.formulario.controls.mensajeAdmin.value.trim();
-    return mensaje.length > 0 ? mensaje : null;
+    return this.campoOpcional('mensajeAdmin');
+  }
+
+  private campoOpcional(campo: 'mensajeAdmin' | 'detalles'): string | null {
+    const valor = this.formulario.controls[campo].value.trim();
+    return valor.length > 0 ? valor : null;
   }
 
   private async ejecutar(accion: () => Promise<void>): Promise<void> {

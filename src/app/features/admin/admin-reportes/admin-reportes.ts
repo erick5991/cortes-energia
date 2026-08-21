@@ -20,7 +20,7 @@ import { ReporteRevisionCard } from './reporte-revision-card';
         </h1>
         <span class="mt-3 block h-1.5 w-14 rounded-full bg-neutral-900 dark:bg-white" aria-hidden="true"></span>
         <p class="mt-3 text-base text-neutral-600 dark:text-neutral-400">
-          Revisa los reportes pendientes: descártalos, prográmalos como corte o márcalos urgentes.
+          Revisa los reportes pendientes: descártalos o prográmalos como corte.
         </p>
       </div>
 

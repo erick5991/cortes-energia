@@ -12,6 +12,7 @@ export interface DatosNuevoCorte {
   fechaInicio: Date;
   duracionEstimada: string;
   esUrgente: boolean;
+  detalles?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -59,6 +60,7 @@ export class CortesService {
       zona: datos.zona,
       fechaInicio: Timestamp.fromDate(datos.fechaInicio),
       duracionEstimada: datos.duracionEstimada,
+      detalles: datos.detalles ?? null,
       estado: 'programado',
       esUrgente: datos.esUrgente,
       creadoPor: adminUid,

@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import {
@@ -8,7 +9,7 @@ import {
   type CorteProgramado,
   type EstadoCorte,
 } from '../../../core/models/corte-programado.model';
-import { ZONAS } from '../../../core/models/zona.model';
+import { ZONAS, callesDeZona } from '../../../core/models/zona.model';
 import { CortesService } from '../../../core/services/cortes.service';
 import { ACENTO_POR_TONO, Badge, type TonoBadge } from '../../../shared/badge/badge';
 import { Boton } from '../../../shared/boton/boton';
@@ -54,6 +55,11 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
                 <option [value]="zona">{{ zona }}</option>
               }
             </select>
+            @if (callesZonaSeleccionada().length > 0) {
+              <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                Calles y establecimientos de referencia: {{ callesZonaSeleccionada().join(', ') }}
+              </p>
+            }
           </div>
 
           <div class="flex flex-col gap-1">
@@ -77,6 +83,17 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
               class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
               [attr.aria-invalid]="campoInvalido('duracionEstimada')"
             />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="detalles" class="text-sm font-medium">Detalles adicionales (opcional)</label>
+            <textarea
+              id="detalles"
+              formControlName="detalles"
+              rows="2"
+              placeholder="Ej: Corte por mantenimiento de transformador"
+              class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
+            ></textarea>
           </div>
 
           <div class="flex items-center gap-2">
@@ -124,6 +141,14 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
                   <dd>{{ corte.fechaInicio.toDate() | date: 'medium' }}</dd>
                   <dt class="text-neutral-500 dark:text-neutral-400">Duración estimada</dt>
                   <dd>{{ corte.duracionEstimada }}</dd>
+                  @if (callesAfectadas(corte.zona).length > 0) {
+                    <dt class="text-neutral-500 dark:text-neutral-400">Calles afectadas</dt>
+                    <dd>{{ callesAfectadas(corte.zona).join(', ') }}</dd>
+                  }
+                  @if (corte.detalles) {
+                    <dt class="text-neutral-500 dark:text-neutral-400">Detalles</dt>
+                    <dd>{{ corte.detalles }}</dd>
+                  }
                 </dl>
 
                 <div class="mt-4 flex flex-wrap gap-2">
@@ -196,8 +221,18 @@ export class AdminCortes {
     zona: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     fechaInicio: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     duracionEstimada: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    detalles: new FormControl('', { nonNullable: true }),
     esUrgente: new FormControl(false, { nonNullable: true }),
   });
+
+  private readonly zonaSeleccionada = toSignal(this.formulario.controls.zona.valueChanges, {
+    initialValue: '',
+  });
+  protected readonly callesZonaSeleccionada = computed(() => callesDeZona(this.zonaSeleccionada()));
+
+  protected callesAfectadas(zona: string): readonly string[] {
+    return callesDeZona(zona);
+  }
 
   protected campoInvalido(campo: 'zona' | 'fechaInicio' | 'duracionEstimada'): boolean {
     const control = this.formulario.controls[campo];
@@ -214,15 +249,16 @@ export class AdminCortes {
     }
 
     this.creando.set(true);
-    const { zona, fechaInicio, duracionEstimada, esUrgente } = this.formulario.getRawValue();
+    const { zona, fechaInicio, duracionEstimada, detalles, esUrgente } = this.formulario.getRawValue();
     try {
       await this.cortesService.crearCorte({
         zona,
         fechaInicio: new Date(fechaInicio),
         duracionEstimada,
         esUrgente,
+        detalles: detalles.trim().length > 0 ? detalles.trim() : null,
       });
-      this.formulario.reset({ zona: '', fechaInicio: '', duracionEstimada: '', esUrgente: false });
+      this.formulario.reset({ zona: '', fechaInicio: '', duracionEstimada: '', detalles: '', esUrgente: false });
       this.creado.set(true);
     } catch (error) {
       this.errorFormulario.set(error instanceof Error ? error.message : 'No se pudo crear el corte.');

@@ -71,10 +71,6 @@ export class ReportesService {
     await this.actualizarEstado(reporteId, 'descartado', mensajeAdmin);
   }
 
-  async marcarUrgente(reporteId: string, mensajeAdmin: string | null): Promise<void> {
-    await this.actualizarEstado(reporteId, 'urgente', mensajeAdmin);
-  }
-
   /** Crea el corte programado y actualiza el reporte en una sola transacción,
    * para que un reporte nunca quede "programado" sin su corte asociado. */
   async programarComoCorte(
@@ -98,6 +94,7 @@ export class ReportesService {
       zona: datos.zona,
       fechaInicio: Timestamp.fromDate(datos.fechaInicio),
       duracionEstimada: datos.duracionEstimada,
+      detalles: datos.detalles ?? null,
       estado: 'programado',
       esUrgente: datos.esUrgente,
       creadoPor: adminUid,

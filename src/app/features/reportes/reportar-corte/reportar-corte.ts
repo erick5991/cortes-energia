@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-import { ZONAS } from '../../../core/models/zona.model';
+import { ZONAS, callesDeZona } from '../../../core/models/zona.model';
 import { ReportesService } from '../../../core/services/reportes.service';
 import { Boton } from '../../../shared/boton/boton';
 
@@ -54,6 +55,10 @@ import { Boton } from '../../../shared/boton/boton';
           </select>
           @if (campoInvalido('zona')) {
             <p id="zona-error" role="alert" class="text-sm text-red-700 dark:text-red-300">Elige una zona.</p>
+          } @else if (callesZonaSeleccionada().length > 0) {
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              Calles y establecimientos de referencia: {{ callesZonaSeleccionada().join(', ') }}
+            </p>
           }
         </div>
 
@@ -96,6 +101,11 @@ export class ReportarCorte {
       validators: [Validators.required, Validators.maxLength(500)],
     }),
   });
+
+  private readonly zonaSeleccionada = toSignal(this.formulario.controls.zona.valueChanges, {
+    initialValue: '',
+  });
+  protected readonly callesZonaSeleccionada = computed(() => callesDeZona(this.zonaSeleccionada()));
 
   protected campoInvalido(campo: 'zona' | 'descripcion'): boolean {
     const control = this.formulario.controls[campo];

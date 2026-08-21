@@ -8,6 +8,7 @@ import {
   type CorteProgramado,
   type EstadoCorte,
 } from '../../../core/models/corte-programado.model';
+import { callesDeZona } from '../../../core/models/zona.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { CortesService } from '../../../core/services/cortes.service';
 import { Boton } from '../../../shared/boton/boton';
@@ -90,6 +91,14 @@ import { ACENTO_POR_TONO, Badge, type TonoBadge } from '../../../shared/badge/ba
                 <dd>{{ corte.fechaInicio.toDate() | date: 'medium' }}</dd>
                 <dt class="text-neutral-500 dark:text-neutral-400">Duración estimada</dt>
                 <dd>{{ corte.duracionEstimada }}</dd>
+                @if (callesAfectadas(corte.zona).length > 0) {
+                  <dt class="text-neutral-500 dark:text-neutral-400">Calles afectadas</dt>
+                  <dd>{{ callesAfectadas(corte.zona).join(', ') }}</dd>
+                }
+                @if (corte.detalles) {
+                  <dt class="text-neutral-500 dark:text-neutral-400">Detalles</dt>
+                  <dd>{{ corte.detalles }}</dd>
+                }
               </dl>
             </li>
           }
@@ -111,6 +120,10 @@ export class VistaPublica {
 
   protected tonoEstado(estado: EstadoCorte): TonoBadge {
     return TONO_POR_ESTADO_CORTE[estado];
+  }
+
+  protected callesAfectadas(zona: string): readonly string[] {
+    return callesDeZona(zona);
   }
 
   protected claseCard(corte: CorteProgramado): string {

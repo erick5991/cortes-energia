@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 
 import {
   ETIQUETA_POR_ESTADO_REPORTE,
@@ -15,19 +16,22 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
 
 @Component({
   selector: 'app-mis-reportes',
-  imports: [DatePipe, Badge, Boton, ConfirmacionModal],
+  imports: [DatePipe, RouterLink, Badge, Boton, ConfirmacionModal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section aria-labelledby="titulo-mis-reportes" class="flex flex-col gap-8">
-      <div>
-        <span class="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
-          Tu actividad
-        </span>
-        <h1 id="titulo-mis-reportes" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Mis reportes</h1>
-        <span class="mt-3 block h-1.5 w-14 rounded-full bg-neutral-900 dark:bg-white" aria-hidden="true"></span>
-        <p class="mt-3 text-base text-neutral-600 dark:text-neutral-400">
-          Reportes que enviaste y su estado de revisión.
-        </p>
+      <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+            Tu actividad
+          </span>
+          <h1 id="titulo-mis-reportes" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Mis reportes</h1>
+          <span class="mt-3 block h-1.5 w-14 rounded-full bg-neutral-900 dark:bg-white" aria-hidden="true"></span>
+          <p class="mt-3 text-base text-neutral-600 dark:text-neutral-400">
+            Reportes que enviaste y su estado de revisión.
+          </p>
+        </div>
+        <a appBoton="primario" tamano="grande" class="shrink-0" routerLink="/reportar">Nuevo reporte</a>
       </div>
 
       @if (errorEliminar()) {

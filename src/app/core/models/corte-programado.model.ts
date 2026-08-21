@@ -9,6 +9,7 @@ export interface CorteProgramado {
   zona: string;
   fechaInicio: Timestamp;
   duracionEstimada: string;
+  detalles: string | null;
   estado: EstadoCorte;
   esUrgente: boolean;
   creadoPor: string;
