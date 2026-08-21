@@ -1,59 +1,107 @@
-# CortesEnergia
+# Documentacion Cortes Energia
+## El problema y a quién afecta
+Los cortes de luz no se comunican bien, la gente no sabe cuándo va a haber uno programado en su zona, ni puede reportar uno en curso. Afecta a cualquier vecino de la ciudad, especialmente en zonas con hospitales u otros servicios críticos.
+## Alcance
+- Vista pública de cortes.
+- Reporte de cortes con cuenta de Google.
+- Revisión de reportes por un admin (descartar/programar/urgente + mensaje al usuario). 
+- Panel para crear cortes programados (admin). 
+- Dashboard simple de "mis reportes" (usuario). 
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.20.
+NO INCLUYE: 
 
-## Development server
+- Mapa. 
+- Notificaciones push.
+- Métricas/gráficos. 
+- Agrupación automática de reportes.
+- Edición de reportes por el usuario.
 
-To start a local development server, run:
+## Diagrama
+
+![Captura de pantalla](assets/diagram.jpg)
+## Justificacion de tecnlogías
+
+Con fines de aprendizaje se utilizaron las siguientes tecnologías:
+
+- Angular SPA sin SSR en vez de Next.js/SSR: los datos son en tiempo real y no hace falta SEO.
+- Firestore en vez de una base SQL propia: modelo simple, sin relaciones complejas, y da lectura pública en tiempo real gratis.
+- Firebase Auth en vez de login propio: no vale la pena reinventar autenticación para este alcance.
+- Reglas de seguridad de Firestore en vez de backend propio (NestJS/Express): la lógica de permisos es simple y no justifica mantener un servidor.
+- Plan Spark (gratis) en vez de Blaze: no se usa Storage ni nada que exceda la cuota gratuita.
+
+Herramientas utilizadas:
+
+- Debian en WSL2.
+- VS Code.
+- Asistencia de IA.
+- Git y Github.
+- Firebase CLI.
+
+## Información Técnica
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) version 21.2.20.
+
+## Requisitos
+
+Vea las instrucciones de instalacion de cada tecnologia en su respectiva documentacion en internet.
+
+- Node instalado, version 24 recomendado.
+- Node Package Manager (npm) instalado.
+- Git instalado.
+- Angular instalado (opcional).
+
+## Instrucciones
+Clonar el repositorio
+
+```bash
+git clone https://github.com/erick5991/cortes-energia.git
+```
+Ingresar al directorio
+```bash 
+cd cortes-energia
+```
+Instalar dependencias
+```bash
+npm install
+```
+## Ambiente de desarrollo
+
+Para iniciar el servidor de desarrollo ejecute:
 
 ```bash
 ng serve
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Si no tiene Angular instalado, ejecute:
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Una vez que el servidor esté en ejecución, abre tu navegador y ve a `http://localhost:4200/`. La aplicación se recargará automáticamente cada vez que modifiques cualquiera de los archivos fuente.
 
-```bash
-ng generate --help
-```
+## Compilar el proyecto
 
-## Building
-
-To build the project run:
+Para compilar el proyecto, ejecuta:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Si no tiene Angular instalado, ejecute:
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+Esto compilará la aplicación y almacenará los archivos generados en el directorio `dist/`. De forma predeterminada, la compilación para producción optimiza la aplicación para obtener el mejor rendimiento y velocidad.
 
-For end-to-end (e2e) testing, run:
+## Ejecutar pruebas unitarias
 
-```bash
-ng e2e
-```
+TODO
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Ejecutar pruebas de extremo a extremo (E2E)
 
-## Additional Resources
+TODO
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Recursos adicionales
+
+Para obtener más información sobre el uso de Angular CLI, incluidos los comandos disponibles y su referencia detallada, consulta la documentación oficial de [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli).
