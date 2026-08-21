@@ -1,3 +1,4 @@
+// Estos "secretos" son para identficar el proyecto, son publicos de todas maneras en el codigo fuente.
 export const environment = {
   firebase: {
     apiKey: 'AIzaSyA3h_H6rg3id1hlsE0iE-3JjkPbOudn6vE',

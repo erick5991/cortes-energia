@@ -13,11 +13,14 @@ import { Boton } from '../../../shared/boton/boton';
   template: `
     <section aria-labelledby="titulo-reportar" class="mx-auto flex max-w-md flex-col gap-6">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+        <span
+          class="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-rose-800 dark:bg-amber-900/30 dark:text-amber-300"
+        >
           Nuevo reporte
-        </p>
-        <h1 id="titulo-reportar" class="mt-1 text-3xl font-bold tracking-tight">Reportar un corte</h1>
-        <p class="mt-2 text-base text-slate-600 dark:text-slate-400">
+        </span>
+        <h1 id="titulo-reportar" class="mt-3 text-3xl font-extrabold tracking-tight">Reportar un corte</h1>
+        <span class="mt-3 block h-1.5 w-14 rounded-full bg-amber-400" aria-hidden="true"></span>
+        <p class="mt-3 text-base text-stone-600 dark:text-stone-400">
           Cuéntanos qué está pasando en tu zona. Un administrador va a revisar tu reporte.
         </p>
       </div>
@@ -42,7 +45,7 @@ import { Boton } from '../../../shared/boton/boton';
           <select
             id="zona"
             formControlName="zona"
-            class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-800 dark:text-slate-100"
+            class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-800 dark:text-stone-100"
             [attr.aria-invalid]="campoInvalido('zona')"
             [attr.aria-describedby]="campoInvalido('zona') ? 'zona-error' : null"
           >
@@ -62,7 +65,7 @@ import { Boton } from '../../../shared/boton/boton';
             id="descripcion"
             formControlName="descripcion"
             rows="4"
-            class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-800 dark:text-slate-100"
+            class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-800 dark:text-stone-100"
             [attr.aria-invalid]="campoInvalido('descripcion')"
             [attr.aria-describedby]="campoInvalido('descripcion') ? 'descripcion-error' : null"
           ></textarea>

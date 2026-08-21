@@ -38,7 +38,8 @@ service cloud.firestore {
 
     // reportes: cualquier usuario autenticado puede crear un reporte propio,
     // en estado "pendiente" y sin revisión previa. Solo el dueño o un admin
-    // pueden leerlo. Solo un admin puede actualizarlo (revisión). Sin delete.
+    // pueden leerlo. Solo un admin puede actualizarlo (revisión). El dueño
+    // puede eliminar su propio reporte.
     match /reportes/{reporteId} {
       allow create: if isSignedIn()
         && request.resource.data.reportadoPor == request.auth.uid
@@ -48,7 +49,7 @@ service cloud.firestore {
       allow read: if isSignedIn()
         && (resource.data.reportadoPor == request.auth.uid || isAdmin());
       allow update: if isAdmin();
-      allow delete: if false;
+      allow delete: if isSignedIn() && resource.data.reportadoPor == request.auth.uid;
     }
   }
 }

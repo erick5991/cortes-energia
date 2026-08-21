@@ -16,21 +16,21 @@ import { Boton } from '../../../shared/boton/boton';
   imports: [DatePipe, ReactiveFormsModule, Badge, Boton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'rounded-xl bg-white p-5 shadow-sm dark:bg-slate-800',
+    class: 'rounded-xl bg-white p-6 shadow-sm dark:bg-stone-800',
   },
   template: `
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-lg font-semibold">{{ reporte().zona }}</h3>
+        <h3 class="text-xl font-semibold">{{ reporte().zona }}</h3>
         <app-badge [texto]="etiqueta()" [tono]="tono()" />
       </div>
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-1 text-sm text-stone-500 dark:text-stone-400">
         {{ reporte().fecha.toDate() | date: 'medium' }}
       </p>
-      <p class="mt-3 text-base text-slate-700 dark:text-slate-300">{{ reporte().descripcion }}</p>
+      <p class="mt-3 text-base text-stone-700 dark:text-stone-300">{{ reporte().descripcion }}</p>
 
       @if (reporte().mensajeAdmin) {
         <div
-          class="mt-4 rounded-lg border border-indigo-200 bg-indigo-50 p-3 text-sm text-indigo-900 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200"
+          class="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm text-rose-900 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
         >
           <p class="font-semibold">Tu mensaje al usuario</p>
           <p class="mt-1">{{ reporte().mensajeAdmin }}</p>
@@ -51,19 +51,19 @@ import { Boton } from '../../../shared/boton/boton';
               [id]="'mensaje-' + reporte().id"
               formControlName="mensajeAdmin"
               rows="2"
-              class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-700 dark:text-slate-100"
+              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
             ></textarea>
           </div>
 
           @if (mostrandoFormularioCorte()) {
-            <div class="flex flex-col gap-3 rounded-lg border border-slate-300 p-3 dark:border-slate-600">
+            <div class="flex flex-col gap-3 rounded-lg border border-stone-300 p-3 dark:border-stone-600">
               <div class="flex flex-col gap-1">
                 <label [for]="'fecha-' + reporte().id" class="text-sm font-medium">Fecha y hora de inicio</label>
                 <input
                   [id]="'fecha-' + reporte().id"
                   type="datetime-local"
                   formControlName="fechaInicio"
-                  class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-700 dark:text-slate-100"
+                  class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
                 />
               </div>
               <div class="flex flex-col gap-1">
@@ -73,7 +73,7 @@ import { Boton } from '../../../shared/boton/boton';
                   type="text"
                   placeholder="Ej: 2 horas"
                   formControlName="duracionEstimada"
-                  class="rounded-md border border-slate-500 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-slate-700 dark:text-slate-100"
+                  class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
                 />
               </div>
               <div class="flex items-center gap-2">
@@ -81,7 +81,7 @@ import { Boton } from '../../../shared/boton/boton';
                   [id]="'urgente-' + reporte().id"
                   type="checkbox"
                   formControlName="esUrgente"
-                  class="h-4 w-4 rounded accent-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  class="h-4 w-4 rounded accent-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700"
                 />
                 <label [for]="'urgente-' + reporte().id" class="text-sm font-medium">Marcar como urgente</label>
               </div>

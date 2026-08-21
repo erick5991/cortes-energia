@@ -12,14 +12,14 @@ const CLASE_ITEM_NAV =
   imports: [RouterOutlet, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-dvh bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-      <header class="bg-indigo-600 text-white shadow-md dark:bg-indigo-900">
-        <div class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
+    <div class="min-h-dvh bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-100">
+      <header class="bg-rose-900 text-white shadow-md dark:bg-rose-950">
+        <div class="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <a
             routerLink="/"
-            class="text-xl font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            class="text-2xl font-extrabold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            Cortes de Luz
+            TRABAJOS PROGRAMADOS
           </a>
           <div class="flex items-center gap-3 text-sm">
             <nav class="flex items-center gap-1">
@@ -42,7 +42,7 @@ const CLASE_ITEM_NAV =
             </nav>
             @if (auth.estaAutenticado()) {
               <div class="flex items-center gap-2 border-l border-white/20 pl-3">
-                <span class="text-indigo-100">{{ nombreUsuario() }}</span>
+                <span class="text-rose-100">{{ nombreUsuario() }}</span>
                 <button type="button" [class]="claseItemNav" (click)="cerrarSesion()">
                   Cerrar sesión
                 </button>
@@ -51,7 +51,7 @@ const CLASE_ITEM_NAV =
           </div>
         </div>
       </header>
-      <main class="mx-auto max-w-3xl px-4 py-6">
+      <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6">
         <router-outlet />
       </main>
     </div>
