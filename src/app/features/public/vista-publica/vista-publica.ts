@@ -22,19 +22,24 @@ import { ACENTO_POR_TONO, Badge, type TonoBadge } from '../../../shared/badge/ba
       <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span
-            class="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-rose-800 dark:bg-amber-900/30 dark:text-amber-300"
+            class="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400"
           >
             Servicio público
           </span>
           <h1 id="titulo-vista-publica" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Cortes de Energia
           </h1>
-          <span class="mt-3 block h-1.5 w-14 rounded-full bg-amber-400" aria-hidden="true"></span>
-          <p class="mt-3 text-base text-stone-600 dark:text-stone-400">
+          <span class="mt-3 block h-1.5 w-14 rounded-full bg-neutral-900 dark:bg-white" aria-hidden="true"></span>
+          <p class="mt-3 text-base text-neutral-600 dark:text-neutral-400">
             Estado de los cortes programados y en curso en la ciudad.
           </p>
         </div>
-        @if (auth.estaAutenticado()) {
+        @if (auth.esAdmin()) {
+          <div class="flex shrink-0 gap-3">
+            <a appBoton="primario" tamano="grande" routerLink="/admin/cortes">Programar corte</a>
+            <a appBoton="secundario" tamano="grande" routerLink="/admin/reportes">Reporte de cortes</a>
+          </div>
+        } @else if (auth.estaAutenticado()) {
           <div class="flex shrink-0 gap-3">
             <a appBoton="primario" tamano="grande" routerLink="/reportar">Reportar corte</a>
             <a appBoton="secundario" tamano="grande" routerLink="/mis-reportes">Mis reportes</a>
@@ -54,15 +59,15 @@ import { ACENTO_POR_TONO, Badge, type TonoBadge } from '../../../shared/badge/ba
 
       @if (cargando()) {
         <div
-          class="rounded-xl border-2 border-dashed border-stone-300 bg-white/60 p-8 text-center dark:border-stone-700 dark:bg-stone-800/40"
+          class="rounded-xl border-2 border-dashed border-neutral-300 bg-white/60 p-8 text-center dark:border-neutral-700 dark:bg-neutral-800/40"
         >
-          <p class="text-base text-stone-600 dark:text-stone-400">Cargando…</p>
+          <p class="text-base text-neutral-600 dark:text-neutral-400">Cargando…</p>
         </div>
       } @else if (cortes().length === 0) {
         <div
-          class="rounded-xl border-2 border-dashed border-stone-300 bg-white/60 p-8 text-center dark:border-stone-700 dark:bg-stone-800/40"
+          class="rounded-xl border-2 border-dashed border-neutral-300 bg-white/60 p-8 text-center dark:border-neutral-700 dark:bg-neutral-800/40"
         >
-          <p class="text-base text-stone-600 dark:text-stone-400">No hay cortes programados en este momento.</p>
+          <p class="text-base text-neutral-600 dark:text-neutral-400">No hay cortes programados en este momento.</p>
         </div>
       } @else {
         <ul class="flex flex-col gap-5">
@@ -80,10 +85,10 @@ import { ACENTO_POR_TONO, Badge, type TonoBadge } from '../../../shared/badge/ba
                   <app-badge [texto]="etiquetaEstado(corte.estado)" [tono]="tonoEstado(corte.estado)" />
                 </div>
               </div>
-              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-base text-stone-700 dark:text-stone-300">
-                <dt class="text-stone-500 dark:text-stone-400">Inicio</dt>
+              <dl class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-base text-neutral-700 dark:text-neutral-300">
+                <dt class="text-neutral-500 dark:text-neutral-400">Inicio</dt>
                 <dd>{{ corte.fechaInicio.toDate() | date: 'medium' }}</dd>
-                <dt class="text-stone-500 dark:text-stone-400">Duración estimada</dt>
+                <dt class="text-neutral-500 dark:text-neutral-400">Duración estimada</dt>
                 <dd>{{ corte.duracionEstimada }}</dd>
               </dl>
             </li>
@@ -110,7 +115,7 @@ export class VistaPublica {
 
   protected claseCard(corte: CorteProgramado): string {
     const acento = corte.esUrgente ? ACENTO_POR_TONO.urgente : ACENTO_POR_TONO[TONO_POR_ESTADO_CORTE[corte.estado]];
-    const fondo = corte.esUrgente ? 'bg-red-50/70 dark:bg-red-950/20' : 'bg-white dark:bg-stone-800';
+    const fondo = corte.esUrgente ? 'bg-red-50/70 dark:bg-red-950/20' : 'bg-white dark:bg-neutral-800';
     return `${acento} ${fondo}`;
   }
 }

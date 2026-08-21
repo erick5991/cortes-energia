@@ -4,7 +4,7 @@ export type TonoBadge = 'neutro' | 'info' | 'atencion' | 'exito' | 'urgente';
 
 const CLASES_POR_TONO: Record<TonoBadge, string> = {
   neutro:
-    'border-stone-300 bg-stone-100 text-stone-700 dark:border-stone-600 dark:bg-stone-800 dark:text-stone-200',
+    'border-neutral-300 bg-neutral-100 text-neutral-700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200',
   info: 'border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-700 dark:bg-blue-900/40 dark:text-blue-200',
   atencion:
     'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-600 dark:bg-amber-900/40 dark:text-amber-200',
@@ -16,7 +16,7 @@ const CLASES_POR_TONO: Record<TonoBadge, string> = {
 
 /** Color de acento (ej. borde izquierdo de una card) que corresponde a cada tono de badge. */
 export const ACENTO_POR_TONO: Record<TonoBadge, string> = {
-  neutro: 'border-l-stone-300 dark:border-l-stone-600',
+  neutro: 'border-l-neutral-300 dark:border-l-neutral-600',
   info: 'border-l-blue-400 dark:border-l-blue-500',
   atencion: 'border-l-amber-400 dark:border-l-amber-500',
   exito: 'border-l-green-400 dark:border-l-green-500',

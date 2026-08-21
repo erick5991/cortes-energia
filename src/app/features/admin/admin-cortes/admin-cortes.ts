@@ -21,18 +21,16 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
   template: `
     <section aria-labelledby="titulo-admin-cortes" class="flex flex-col gap-8">
       <div>
-        <span
-          class="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-rose-800 dark:bg-amber-900/30 dark:text-amber-300"
-        >
+        <span class="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
           Panel admin
         </span>
         <h1 id="titulo-admin-cortes" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
           Cortes programados
         </h1>
-        <span class="mt-3 block h-1.5 w-14 rounded-full bg-amber-400" aria-hidden="true"></span>
+        <span class="mt-3 block h-1.5 w-14 rounded-full bg-neutral-900 dark:bg-white" aria-hidden="true"></span>
       </div>
 
-      <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-stone-800">
+      <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-neutral-800">
         <h2 class="text-xl font-semibold">Crear corte</h2>
 
         @if (errorFormulario()) {
@@ -48,7 +46,7 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
             <select
               id="zona"
               formControlName="zona"
-              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
+              class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
               [attr.aria-invalid]="campoInvalido('zona')"
             >
               <option value="" disabled>Elige una zona</option>
@@ -64,7 +62,7 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
               id="fechaInicio"
               type="datetime-local"
               formControlName="fechaInicio"
-              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
+              class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
               [attr.aria-invalid]="campoInvalido('fechaInicio')"
             />
           </div>
@@ -76,7 +74,7 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
               type="text"
               placeholder="Ej: 2 horas"
               formControlName="duracionEstimada"
-              class="rounded-md border border-stone-500 bg-white px-3 py-2 text-sm text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700 dark:bg-stone-700 dark:text-stone-100"
+              class="rounded-md border border-neutral-500 bg-white px-3 py-2 text-sm text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
               [attr.aria-invalid]="campoInvalido('duracionEstimada')"
             />
           </div>
@@ -86,7 +84,7 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
               id="esUrgente"
               type="checkbox"
               formControlName="esUrgente"
-              class="h-4 w-4 rounded accent-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700"
+              class="h-4 w-4 rounded accent-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
             />
             <label for="esUrgente" class="text-sm font-medium">Marcar como urgente</label>
           </div>
@@ -105,7 +103,7 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
         }
 
         @if (cortes().length === 0) {
-          <p class="text-base text-stone-600 dark:text-stone-400">Todavía no hay cortes cargados.</p>
+          <p class="text-base text-neutral-600 dark:text-neutral-400">Todavía no hay cortes cargados.</p>
         } @else {
           <ul class="flex flex-col gap-5">
             @for (corte of cortes(); track corte.id) {
@@ -120,11 +118,11 @@ import { ConfirmacionModal } from '../../../shared/confirmacion-modal/confirmaci
                   </div>
                 </div>
                 <dl
-                  class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-base text-stone-700 dark:text-stone-300"
+                  class="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-base text-neutral-700 dark:text-neutral-300"
                 >
-                  <dt class="text-stone-500 dark:text-stone-400">Inicio</dt>
+                  <dt class="text-neutral-500 dark:text-neutral-400">Inicio</dt>
                   <dd>{{ corte.fechaInicio.toDate() | date: 'medium' }}</dd>
-                  <dt class="text-stone-500 dark:text-stone-400">Duración estimada</dt>
+                  <dt class="text-neutral-500 dark:text-neutral-400">Duración estimada</dt>
                   <dd>{{ corte.duracionEstimada }}</dd>
                 </dl>
 
@@ -278,7 +276,7 @@ export class AdminCortes {
 
   protected claseCard(corte: CorteProgramado): string {
     const acento = corte.esUrgente ? ACENTO_POR_TONO.urgente : ACENTO_POR_TONO[TONO_POR_ESTADO_CORTE[corte.estado]];
-    const fondo = corte.esUrgente ? 'bg-red-50/70 dark:bg-red-950/20' : 'bg-white dark:bg-stone-800';
+    const fondo = corte.esUrgente ? 'bg-red-50/70 dark:bg-red-950/20' : 'bg-white dark:bg-neutral-800';
     return `${acento} ${fondo}`;
   }
 }

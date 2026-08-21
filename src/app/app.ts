@@ -12,8 +12,8 @@ const CLASE_ITEM_NAV =
   imports: [RouterOutlet, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-dvh bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-100">
-      <header class="bg-rose-900 text-white shadow-md dark:bg-rose-950">
+    <div class="min-h-dvh bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+      <header class="bg-neutral-900 text-white shadow-md dark:bg-black">
         <div class="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <a
             routerLink="/"
@@ -23,13 +23,12 @@ const CLASE_ITEM_NAV =
           </a>
           <div class="flex items-center gap-3 text-sm">
             <nav class="flex items-center gap-1">
-              @if (auth.esAdmin()) {
-                <a routerLink="/admin/cortes" [class]="claseItemNav">Cortes</a>
-                <a routerLink="/admin/reportes" [class]="claseItemNav">Reportes</a>
-              } @else if (auth.estaAutenticado()) {
-                <a routerLink="/mis-reportes" [class]="claseItemNav">Mis reportes</a>
-              } @else {
-                <a routerLink="/admin/login" [class]="claseItemNav">Admin login</a>
+              @if (!auth.esAdmin()) {
+                @if (auth.estaAutenticado()) {
+                  <a routerLink="/mis-reportes" [class]="claseItemNav">Mis reportes</a>
+                } @else {
+                  <a routerLink="/admin/login" [class]="claseItemNav">Admin login</a>
+                }
               }
               <button
                 type="button"
@@ -42,7 +41,7 @@ const CLASE_ITEM_NAV =
             </nav>
             @if (auth.estaAutenticado()) {
               <div class="flex items-center gap-2 border-l border-white/20 pl-3">
-                <span class="text-rose-100">{{ nombreUsuario() }}</span>
+                <span class="text-neutral-300">{{ nombreUsuario() }}</span>
                 <button type="button" [class]="claseItemNav" (click)="cerrarSesion()">
                   Cerrar sesión
                 </button>
